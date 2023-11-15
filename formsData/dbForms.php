@@ -8,25 +8,27 @@
 
 
 // Validating the Form Values
-if (isset($_POST['submit'])){
+if (isset($_POST["submit"])){
     $username = $_POST['username'];
     $password = $_POST['password'];
+// connecting to local server; lohost, username, password, database
+    $connection = mysqli_connect('localhost', 'root', '', 'loginapp');
+    if($connection){
+        echo 'we are connected';
 
-    $name = ["kayode", "Samuel", "Adeyemi"];
-    $minimum = 5;
-    $maximum = 10;
-    if (strlen($username) < $minimum){
-        echo "Username cannot be shorter than 5";
-    } elseif (strlen($username) > $maximum) {
-        echo "Username cannot be longer than 10";
-    }
-
-    if (!in_array($username, $name)){
-        echo "Sorry, you are not allowed";
     } else {
-        echo "welcome";
+        die('Database Connection Failed');
     }
 
+    // CRUD
+    // Create
+    $query = "INSERT INTO users(username,password) ";
+    $query .= "VALUES ('$username','$password')";
+
+    $result = mysqli_query($connection, $query);
+    if(!$result){
+        die('Query Failed' . mysqli_error());
+    }
 }
 
 ?>
